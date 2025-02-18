@@ -6,10 +6,14 @@ use App\Helpers\ApiResponseSchema;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -18,10 +22,10 @@ class AuthController extends Controller
         $validated = $request->validated();
         // serial generator 
         $serial = IdGenerator::generate([
-            'table' => 'users', 
-            'field' => 'serial', 
-            'length' => 8, 
-            'prefix' => 'TRACKER-' ,
+            'table' => 'users',
+            'field' => 'serial',
+            'length' => 8,
+            'prefix' => 'TRACKER-',
         ]);
         $validated['serial'] = $serial;
         // salary bydefault is zero
@@ -39,14 +43,14 @@ class AuthController extends Controller
         $data['salary'] = $user->salary;
         $data['serial'] = $user->serial;
         $data['token'] = $user->createToken('Registerd Token')->plainTextToken;
-        if($user) return ApiResponseSchema::sendResponse(201, 'Registered Successfully', $data);
+        if ($user) return ApiResponseSchema::sendResponse(201, 'Registered Successfully', $data);
     }
 
 
     public function logout(Request $request)
     {
         $user = $request->user();
-        if(! $user) {
+        if (! $user) {
             return ApiResponseSchema::sendResponse(401, 'Unauthorized: User not authenticated', []);
         }
         $user->currentAccessToken()->delete();
@@ -56,8 +60,7 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         $validated = $request->validated();
-        if(Auth::attempt($validated))
-        {
+        if (Auth::attempt($validated)) {
             $user = $request->user();
             $data['username'] = $user->name;
             $data['image'] = $user->image;
@@ -69,5 +72,43 @@ class AuthController extends Controller
             return ApiResponseSchema::sendResponse(200, 'Logged in successfully', $data);
         }
         return ApiResponseSchema::sendResponse(401, 'Credentials Error');
+    }
+
+    public function update(UpdateUserRequest $request)
+    {
+        $user = $request->user();
+        $validated = $request->validated();
+        // handle image
+        if ($request->hasFile('image')) {
+            // Delete Old Image
+            Storage::delete('public/userImages/' . $user->image);
+            // handle new image 
+            $image = $request->image;
+            $newImgName = $user->serial . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('userImages', $newImgName, 'public');
+            $validated['image'] = $newImgName;
+        }
+
+        // Ensure the authenticated user can only update their own profile
+        if ($user->id !== Auth::id()) {
+            return ApiResponseSchema::sendResponse(403, 'Unauthorized Action');
+        }
+
+        try {
+            $user->update($validated);
+            return ApiResponseSchema::sendResponse(200, 'Updated Successfully', []);
+        } catch (\Exception $e) {
+            Log::error('User profile update failed: ' . $e->getMessage());
+            return ApiResponseSchema::sendResponse(500, 'An error occurred while updating the profile', []);
+        }
+    }
+
+    public function userDetails(Request $request)
+    {
+        $user = $request->user();
+        if ($user->id !== Auth::id()) {
+            return ApiResponseSchema::sendResponse(403, 'Unauthorized Action');
+        }
+        return ApiResponseSchema::sendResponse(200, 'Retrived Successfully', new UserResource($user));
     }
 }

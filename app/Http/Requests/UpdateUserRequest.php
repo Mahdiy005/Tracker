@@ -1,13 +1,13 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Requests;
 
 use App\Helpers\ApiResponseSchema;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Http\FormRequest;
 
-class {{ class }} extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,11 +17,9 @@ class {{ class }} extends FormRequest
         return TRUE;
     }
 
-    // schema validation form
     protected function failedValidation(Validator $validator)
     {
-        if($this->is('api/*'))
-        {
+        if ($this->is('api/*')) {
             $response = ApiResponseSchema::sendResponse(422, 'Validation Error', $validator->errors());
             throw new ValidationException($validator, $response);
         }
@@ -35,7 +33,11 @@ class {{ class }} extends FormRequest
     public function rules(): array
     {
         return [
-            //'name' => 'required',
+            'name' => 'required|string',
+            'email' => 'required|email|string',
+            'image' => 'nullable|mimes:png,jpg,jpeg',
+            'phone' => 'required|max:11',
+            'position' => 'required|string',
         ];
     }
 
