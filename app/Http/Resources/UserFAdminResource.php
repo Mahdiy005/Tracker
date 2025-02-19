@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class UserFAdminResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'image' => $this->image,
             'serial' => $this->serial,
             'position' => $this->position,
+            'role' => $this->role,
         ];
     }
 }

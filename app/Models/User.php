@@ -38,4 +38,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    // RELATIONSHIPS
+    public function attendances()
+    {
+        $this->hasMany(Attendance::class, 'user_id', 'id');
+    }
 }
+
+
+// $user->attendances
