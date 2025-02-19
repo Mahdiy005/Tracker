@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\ApiResponseSchema;
 use App\Http\Controllers\API\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,3 +32,18 @@ Route::controller(AuthController::class)->group(function () {
         Route::get('logout', 'logout');
     });
 });
+
+
+// Routes Accesible by only admin
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() {
+    Route::get('/', function() {
+        return ApiResponseSchema::sendResponse(200, 'OK', ['hello']);
+    });
+});
+
+
+// // Regular user routes
+// Route::middleware(['auth:sanctum', 'role:' . UserRole::USER->value])->group(function () {
+//     Route::get('/user/profile', [UserController::class, 'profile']);
+//     Route::post('/user/update', [UserController::class, 'update']);
+// });
