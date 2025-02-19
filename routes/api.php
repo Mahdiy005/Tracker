@@ -1,7 +1,9 @@
 <?php
 
 use App\Helpers\ApiResponseSchema;
+use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,8 +38,28 @@ Route::controller(AuthController::class)->group(function () {
 
 // Routes Accesible by only admin
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() {
-    Route::get('/', function() {
-        return ApiResponseSchema::sendResponse(200, 'OK', ['hello']);
+    //==================================== User Module
+    Route::controller(UserController::class)->prefix('users')->group(function() {
+        // get all users in the system
+        Route::get('/', 'index');
+        // get details of specific user
+        Route::get('/{user_id}', 'show');
+        // promote new user to admin
+        Route::post('/promote/{user_id}', 'promote');
+        // demote new user to admin
+        Route::post('/demote/{user_id}', 'demote');
+    });
+
+    //==================================== Attendance Module
+    Route::controller(AttendanceController::class)->prefix('attendance')->group(function() {
+        // All attenaces records
+        Route::get('/', 'allAttendance');
+        // Display all attendance record based status and date
+        Route::get('/status/{status}', 'index');
+        // get the all history attendance for specific user 
+        Route::get('/user/{user_id}', 'getUserAttendance');
+        // manually store new attendance
+        Route::post('/store/{user_id}', 'store');
     });
 });
 

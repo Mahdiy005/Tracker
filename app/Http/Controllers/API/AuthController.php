@@ -24,7 +24,7 @@ class AuthController extends Controller
         $serial = IdGenerator::generate([
             'table' => 'users',
             'field' => 'serial',
-            'length' => 8,
+            'length' => 15,
             'prefix' => 'TRACKER-',
         ]);
         $validated['serial'] = $serial;
