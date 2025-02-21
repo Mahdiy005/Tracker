@@ -4,6 +4,7 @@ use App\Helpers\ApiResponseSchema;
 use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\VilationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,14 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() 
         Route::get('/user/{user_id}', 'getUserAttendance');
         // manually store new attendance
         Route::post('/store/{user_id}', 'store');
+    });
+
+    //==================================== Violation Module
+    Route::controller(VilationController::class)->prefix('violations')->group(function() {
+        Route::get('/', 'index');
+        Route::get('/user/{user_id}', 'getUserViolations');
+        Route::post('/store', 'store');
+        Route::get('/delete/{violation_id}', 'destroy');
     });
 });
 

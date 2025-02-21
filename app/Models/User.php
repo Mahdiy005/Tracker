@@ -45,7 +45,13 @@ class User extends Authenticatable
     {
         $this->hasMany(Attendance::class, 'user_id', 'id');
     }
+
+    public function vilations()
+    {
+        $this->hasMany(Vilation::class, 'user_id', 'id');
+    }
 }
 
 
 // $user->attendances
+// $user->vilations
