@@ -50,8 +50,15 @@ class User extends Authenticatable
     {
         $this->hasMany(Vilation::class, 'user_id', 'id');
     }
+
+    public function trainedImages()
+    {
+        return $this->hasMany(TrainedImage::class);
+    }
 }
 
 
 // $user->attendances
 // $user->vilations
+// $user->activityLog ~> current activity for the user 
+// $user->trainedImages 
