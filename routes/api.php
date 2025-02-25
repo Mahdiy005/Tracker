@@ -1,11 +1,11 @@
 <?php
 
-use App\Helpers\ApiResponseSchema;
+use App\Enums\UserRole;
 use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VilationController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\TrainedImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 // Auth Module
 Route::controller(AuthController::class)->group(function () {
@@ -30,7 +30,6 @@ Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
     });
     Route::middleware('auth:sanctum')->prefix('user')->group(function() {
-        Route::get('/', 'userDetails');
         Route::post('update-account', 'update');
         Route::get('logout', 'logout');
     });
@@ -73,8 +72,14 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() 
 });
 
 
-// // Regular user routes
-// Route::middleware(['auth:sanctum', 'role:' . UserRole::USER->value])->group(function () {
-//     Route::get('/user/profile', [UserController::class, 'profile']);
-//     Route::post('/user/update', [UserController::class, 'update']);
-// });
+// Regular user routes
+Route::middleware(['auth:sanctum', 'role:' . UserRole::USER->value])->prefix('user')->group(function () {
+    Route::get('/', [AuthController::class, 'userDetails']);
+
+    //==================================== Trained Images Module
+    Route::controller(TrainedImageController::class)->prefix('trained-images')->group(function () {
+        Route::post('store', 'store');
+        Route::get('index', 'index');
+        Route::get('delete/{img_id}', 'destroy');
+    });
+});
