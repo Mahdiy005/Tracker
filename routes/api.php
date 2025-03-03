@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\UserRole;
+use App\Http\Controllers\API\ActivityLogController;
 use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
@@ -68,6 +69,13 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() 
         Route::get('/user/{user_id}', 'getUserViolations');
         Route::post('/store', 'store');
         Route::get('/delete/{violation_id}', 'destroy');
+    });
+
+    //==================================== ActivityLog Module
+    Route::controller(ActivityLogController::class)->prefix('activity-log')->group(function() {
+        Route::get('/', 'index');
+        Route::get('/user/{user_id}', 'getActivLogForUser');
+        Route::get('/delete/{activityLogID}', 'destrot');
     });
 });
 

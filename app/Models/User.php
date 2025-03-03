@@ -55,6 +55,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(TrainedImage::class);
     }
+
+    public function actvityLogs()
+    {
+        return $this->hasMany(ActivityLog::class, 'user_id', 'id');
+    }
 }
 
 
@@ -62,3 +67,4 @@ class User extends Authenticatable
 // $user->vilations
 // $user->activityLog ~> current activity for the user 
 // $user->trainedImages 
+// $user->actvityLogs 
