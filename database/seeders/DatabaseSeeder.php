@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            ActivityLogSeeder::class,
             UserSeeder::class,
             AttendanceSeeder::class,
+            // ActivityLogSeeder::class,
         ]);
     }
 }
