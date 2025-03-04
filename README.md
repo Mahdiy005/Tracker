@@ -1,4 +1,4 @@
-<p style="height: 50px" align="center"><img src="https://github.com/Mahdiy005/Tracker/blob/main/public/logo.png" width="400" alt="Laravel Logo"></p>
+<p style="height: 50px" align="center"><img src="https://github.com/Mahdiy005/Tracker/blob/main/public/logo.png" width="600" alt="Laravel Logo"></p>
 
 
 # Laravel Project Setup Guide
