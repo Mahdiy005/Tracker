@@ -1,4 +1,4 @@
-
+<img src="https://github.com/Mahdiy005/Tracker/blob/main/public/logo.png" alt="Laravel Logo">
 
 
 # Laravel Project Setup Guide
