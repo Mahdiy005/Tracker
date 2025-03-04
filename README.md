@@ -8,8 +8,8 @@ This guide will help you set up and run a Laravel project after cloning it from 
 ## 1️⃣ Clone the Repository
 
 ```sh
-git clone https://github.com/your-username/your-laravel-project.git
-cd your-laravel-project
+git clone https://github.com/Mahdiy005/Tracker.git
+cd Tracker
 ```
 
 ## 2️⃣ Install Dependencies
@@ -43,7 +43,7 @@ Edit the `.env` file and set up the database connection:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=your_database_name
+DB_DATABASE=tracker
 DB_USERNAME=root
 DB_PASSWORD=
 ```
