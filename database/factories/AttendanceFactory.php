@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\AttendanceStatus;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,9 @@ class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'status' => getRandomString([AttendanceStatus::ATTEND->value, AttendanceStatus::ABSENT->value]),
+            'user_id' => User::inRandomOrder()->first()->id ?? 1,
+            'created_at' => now()->subDays(rand(0, 5))->addSeconds(rand(0, 86400)),
         ];
     }
 }
