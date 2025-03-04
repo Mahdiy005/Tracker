@@ -5,6 +5,6 @@ namespace App\Enums;
 enum AttendanceStatus: string
 {
     case ATTEND = 'attend';
-    case ABSENT = '';
+    case ABSENT = 'absent';
     case BREAK = 'break';
 }

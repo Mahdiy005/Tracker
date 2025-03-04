@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -23,12 +24,31 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        // $serial = IdGenerator::generate([
+        //     'table' => 'users',
+        //     'field' => 'serial',
+        //     'length' => 15,
+        //     'prefix' => 'TRACK-',
+        // ]);
+        // User::create([
+        //     'name' => 'admin',
+        //     'email' => 'admin@mail.com',
+        //     'image' => '/',
+        //     'serial' => $serial,
+        //     'password' => '123456789',
+        //     'phone' => '012345678',
+        //     'position' => 'Front-end',
+        //     'role' => UserRole::ADMIN->value
+        // ]);
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'image' => '',
+            'password' => '123456789',
+            'phone' => '012345678',
+            'position' => fake()->jobTitle(),
+            'serial' => 'TRACK-' . (string) \Illuminate\Support\Str::uuid(),
+            'role' => 'user',
         ];
     }
 
@@ -37,7 +57,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
