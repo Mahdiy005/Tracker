@@ -24,13 +24,14 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-// Auth Module
+// ============== Auth Module
 Route::controller(AuthController::class)->group(function () {
-    Route::prefix('auth')->group(function() {
-        Route::post('register', 'register');
-        Route::post('login', 'login');
-    });
-    Route::middleware('auth:sanctum')->prefix('user')->group(function() {
+    // Handle Only admin can register new user , regular user can't register new account 
+    Route::post('admin/register-user', 'register')->middleware(['auth:sanctum', 'admin']);
+    // this route for all users admin or reqgular can signin
+    Route::post('auth/login', 'login');
+
+    Route::middleware('auth:sanctum')->prefix('user')->group(function () {
         Route::post('update-account', 'update');
         Route::get('logout', 'logout');
     });
@@ -38,9 +39,9 @@ Route::controller(AuthController::class)->group(function () {
 
 
 // Routes Accesible by only admin
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() {
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
     //==================================== User Module
-    Route::controller(UserController::class)->prefix('users')->group(function() {
+    Route::controller(UserController::class)->prefix('users')->group(function () {
         // get all users in the system
         Route::get('/', 'index');
         // get details of specific user
@@ -52,7 +53,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() 
     });
 
     //==================================== Attendance Module
-    Route::controller(AttendanceController::class)->prefix('attendance')->group(function() {
+    Route::controller(AttendanceController::class)->prefix('attendance')->group(function () {
         // All attenaces records
         Route::get('/', 'allAttendance');
         // Display all attendance record based status and date
@@ -64,7 +65,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() 
     });
 
     //==================================== Violation Module
-    Route::controller(VilationController::class)->prefix('violations')->group(function() {
+    Route::controller(VilationController::class)->prefix('violations')->group(function () {
         Route::get('/', 'index');
         Route::get('/user/{user_id}', 'getUserViolations');
         Route::post('/store', 'store');
@@ -72,7 +73,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function() 
     });
 
     //==================================== ActivityLog Module
-    Route::controller(ActivityLogController::class)->prefix('activity-log')->group(function() {
+    Route::controller(ActivityLogController::class)->prefix('activity-log')->group(function () {
         Route::get('/', 'index');
         Route::get('/user/{user_id}', 'getActivLogForUser');
         Route::get('/delete/{activityLogID}', 'destrot');
