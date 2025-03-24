@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             AttendanceSeeder::class,
+            CompliantSeeder::class,
+            ComplaintRepliesSeeder::class,
             // ActivityLogSeeder::class,
         ]);
     }

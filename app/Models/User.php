@@ -60,6 +60,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class, 'user_id', 'id');
     }
+
+    public function compliants()
+    {
+        return $this->hasMany(Compliant::class, 'user_id', 'id');
+    }
+
+    public function compliantReplies()
+    {
+        return $this->hasMany(ComplaintReplies::class, 'compliant_id', 'id');
+    }
 }
 
 
@@ -68,3 +78,5 @@ class User extends Authenticatable
 // $user->activityLog ~> current activity for the user 
 // $user->trainedImages 
 // $user->actvityLogs 
+// $user->compliants 
+// $user->compliantReplies  `Only Available for admin`
