@@ -4,6 +4,8 @@ use App\Enums\UserRole;
 use App\Http\Controllers\API\ActivityLogController;
 use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ComplaintRepliesController;
+use App\Http\Controllers\API\CompliantController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VilationController;
 use App\Http\Controllers\API\TrainedImageController;
@@ -78,8 +80,29 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
         Route::get('/user/{user_id}', 'getActivLogForUser');
         Route::get('/delete/{activityLogID}', 'destrot');
     });
-});
 
+    //==================================== Compiants Module
+    Route::controller(CompliantController::class)->prefix('compliant')->group(function () {
+        // get all compiants
+        Route::get('/', 'index');
+        // Update a complaint (e.g., change status)
+        Route::post('edit/{id}', 'update');
+        // Get single complaint for users
+        Route::get('/{id}', 'desplayCompliant');
+        // Admin Replies to Compliant
+        // Route::post('reply/{compliant_id}', 'store')
+    });
+
+    //==================================== Compiants Module
+    Route::controller(ComplaintRepliesController::class)->prefix('compliant-reply')->group(function () {
+        // Admin Replies to specific Compliant
+        Route::post('/{compliant_id}', 'store');
+        // Delete Reply
+        Route::get('/delete/{compliant_id}', 'destroy');
+    });
+});
+// 10|GaTCDwP4uWTNcUXTYJ3Pubx3SKiUHvw4OxeTqK1Wc285ac7b~~ regular user token
+// 12|np2uorauE0UAQpuo7rEYFVvGwSZ1TvjDJ7v690cS53a56475~~ admin user token
 
 // Regular user routes
 Route::middleware(['auth:sanctum', 'role:' . UserRole::USER->value])->prefix('user')->group(function () {
@@ -91,4 +114,18 @@ Route::middleware(['auth:sanctum', 'role:' . UserRole::USER->value])->prefix('us
         Route::get('index', 'index');
         Route::get('delete/{img_id}', 'destroy');
     });
+
+    //==================================== Compliants Module
+    Route::controller(CompliantController::class)->prefix('compliant')->group(function () {
+        // submit new complaints
+        Route::post('/', 'store');
+        // display your complaints history
+        Route::get('/my-complaints', 'displayMyComplaints');
+    });
 });
+
+// //==================================== Compiants Module Routes For Both Admin And users
+// Route::controller(CompliantController::class)->prefix('compliant')->group(function () {
+//     // Get a single complaint with replies
+    
+// });
