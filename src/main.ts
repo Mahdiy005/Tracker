@@ -1,10 +1,8 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { plugins } from "./plugins";
-
-//Emitter config
-import mitt from "mitt";
-const Emitter = mitt();
+import { Icon } from "@iconify/vue";
+import "@/plugins/vee-validate";
 
 import VueApexCharts from "vue3-apexcharts";
 
@@ -20,6 +18,6 @@ plugins(app);
 app.use(createPinia());
 app.use(router);
 app.use(VueApexCharts);
-app.provide("Emitter", Emitter);
+app.component("Icon", Icon);
 
 app.mount("#app");

@@ -1,9 +1,28 @@
 @import "tailwindcss";
+@import "./sweet-allert.css";
+@import "./skeleton-loader.css";
+@import "./pagination.css";
 @custom-variant dark (&:where(.dark, .dark *));
 
 * {
   padding: revert-layer;
   margin: revert-layer;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.dark {
+  body {
+    background-color: var(--color-dark);
+  }
+}
+
+body {
+  background-color: var(--color-light);
 }
 
 @theme {
@@ -54,4 +73,17 @@
 
 .v-toolbar__content {
   overflow: visible !important;
+}
+
+input {
+  font-size: 14px !important;
+  font-weight: 100;
+}
+
+.dark {
+  input,
+  select {
+    border-color: #cccccc56 !important;
+    color: var(--color-white);
+  }
 }

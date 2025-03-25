@@ -34,32 +34,7 @@
 
         <Expand />
 
-        <div
-          class="options_user flex gap-x-2 items-center cursor-pointer"
-          label="Toggle"
-          aria-haspopup="true"
-          aria-controls="overlay_tmenu"
-        >
-          <img
-            src="../assets/images/user.jpg"
-            width="30"
-            height="30"
-            class="rounded-full"
-            alt=""
-          />
-
-          <div class="user_name">
-            <p
-              class="text-xs text-textprime mb-0 font-semibold dark:text-white"
-            >
-              Mohamed Emad
-            </p>
-            <span
-              class="text-xs text-textprime opacity-45 dark:text-subtextdark"
-              >Manager</span
-            >
-          </div>
-        </div>
+        <UserMenue />
       </div>
     </div>
   </v-app-bar>
@@ -69,6 +44,7 @@
 import SwitchMode from "./SwitchMode.vue";
 import Notifications from "./Notifications.vue";
 import Expand from "./Expand.vue";
+import UserMenue from "./UserMenue.vue";
 import { useDark } from "@vueuse/core";
 import { useSidebar } from "@/stores/sidebar";
 const sideBar = useSidebar();
