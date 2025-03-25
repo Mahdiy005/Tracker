@@ -20,29 +20,29 @@ class AuthController extends Controller
     public function register(StoreUserRequest $request)
     {
         $validated = $request->validated();
-        // serial generator 
-        $serial = IdGenerator::generate([
-            'table' => 'users',
-            'field' => 'serial',
-            'length' => 15,
-            'prefix' => 'TRACKER-',
-        ]);
+        // serial generator
+        $serial = generateSerial();
+
+        
         $validated['serial'] = $serial;
         // salary bydefault is zero
         // Store Image
-        $image = $request->image;
-        $newImgName = $serial . '.' . $image->getClientOriginalExtension();
-        $image->storeAs('userImages', $newImgName, 'public');
-        $validated['image'] = $newImgName;
+        if($request->hasFile('image')) {
+            $image = $request->image;
+            $newImgName = $serial . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('userImages', $newImgName, 'public');
+            $validated['image'] = $newImgName;
+        }
         // Generate Token for user
         $user = User::create($validated);
         $data['username'] = $user->name;
         $data['image'] = $user->image;
-        $data['phone'] = $user->phone;
+        $data['phone'] = $user->phone ?? 'Not Exist';
         $data['position'] = $user->position;
         $data['salary'] = $user->salary;
         $data['serial'] = $user->serial;
-        $data['token'] = $user->createToken('Registerd Token')->plainTextToken;
+        // don't need token because the user not registered it just the admin add it to the system 
+        // $data['token'] = $user->createToken('Registerd Token')->plainTextToken;
         if ($user) return ApiResponseSchema::sendResponse(201, 'Registered Successfully', $data);
     }
 

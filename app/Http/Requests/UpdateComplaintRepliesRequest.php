@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class StoreUserRequest extends FormRequest
+class UpdateComplaintRepliesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,6 +17,7 @@ class StoreUserRequest extends FormRequest
         return TRUE;
     }
 
+    // schema validation form
     protected function failedValidation(Validator $validator)
     {
         if($this->is('api/*'))
@@ -25,6 +26,7 @@ class StoreUserRequest extends FormRequest
             throw new ValidationException($validator, $response);
         }
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -33,12 +35,14 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email|string|unique:users,email',
-            'image' => 'nullable|mimes:png,jpg,jpeg',
-            'phone' => 'nullable|max:11',
-            'password' => 'required|string|confirmed|min:8',
-            'position' => 'required|string',
+            //'name' => 'required',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            //'name' => 'Name',
         ];
     }
 }
