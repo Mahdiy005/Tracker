@@ -2,9 +2,10 @@
   <div class="text-start">
     <!-- this input to handle basic input -->
     <div v-if="type != 'select' && type != 'checkbox'">
-      <label class="block text-start text-gray-700 text-sm font-medium mb-1">{{
-        lable
-      }}</label>
+      <label
+        class="block text-start text-gray-700 dark:text-white text-sm font-medium mb-1"
+        >{{ lable }}</label
+      >
       <Field
         :name="name"
         :value="modelValue"

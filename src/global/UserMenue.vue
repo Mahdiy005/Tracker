@@ -27,7 +27,7 @@
       </div>
     </template>
     <v-list class="cursor-pointer">
-      <v-list-item>
+      <v-list-item @click="$router.push('/profile')">
         <div class="flex gap-x-1 items-center">
           <Icon icon="solar:user-broken" width="20" height="20" />
           <span>Profile</span>

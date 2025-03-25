@@ -1,4 +1,4 @@
-.users {
+.compliant {
   .v-pagination {
     direction: ltr;
 
@@ -35,7 +35,7 @@
 }
 
 .dark {
-  .users {
+  .compliant {
     .v-pagination {
       .v-btn__content {
         color: var(--color-white);

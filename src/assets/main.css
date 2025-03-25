@@ -86,4 +86,9 @@ input {
     border-color: #cccccc56 !important;
     color: var(--color-white);
   }
+
+  .v-table {
+    background-color: var(--color-custom-dark);
+    color: var(--color-white);
+  }
 }
