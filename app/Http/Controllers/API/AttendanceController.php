@@ -16,20 +16,21 @@ use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
-    public function allAttendance()
+    public function allAttendance(Request $request)
     {
-        $attendances = Attendance::with('user')->paginate(8);
-        if ($attendances) {
-            // $data['paginate_data'] = AttendanceResource::collection($attendances);
-            // $data['paginate_links'] = [
-            //     'current_page' => $attendances->currentPage(),
-            //     'last_page' => $attendances->lastPage(),
-            //     'per_page' => $attendances->perPage(),
-            //     'total' => $attendances->total(),
-            //     'next_page_url' => $attendances->nextPageUrl(),
-            //     'prev_page_url' => $attendances->previousPageUrl(),
-            // ];
+        $attendances = Attendance::with('user');
 
+        if ($request->has('date')) {
+            $attendances = $attendances->whereDate('created_at', $request->input('date'));
+        }
+
+        if ($request->has('status')) {
+            $attendances = $attendances->where('status', $request->input('status'));
+        }
+
+        $attendances = $attendances->paginate(8);
+        
+        if ($attendances->isNotEmpty()) {
             $data = PaginationHelper::formatPaginate($attendances, AttendanceResource::class);
             return ApiResponseSchema::sendResponse('200', 'Attendances Retrived Succefully', $data);
         }
