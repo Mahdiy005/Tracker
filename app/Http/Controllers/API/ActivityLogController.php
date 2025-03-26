@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\UserRole;
 use App\Helpers\ApiResponseSchema;
+use App\Helpers\PaginationHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreActivityLogRequest;
 use App\Http\Requests\UpdateActivityLogRequest;
@@ -25,10 +26,11 @@ class ActivityLogController extends Controller
             $activityLogs = $activityLogs->whereDate('created_at', $request->input('date'));
         }
 
-        $activityLogs = $activityLogs->get();
+        $activityLogs = $activityLogs->paginate(8);
 
         if ($activityLogs && count($activityLogs) > 0) {
-            return ApiResponseSchema::sendResponse(200, 'Rerived Successfully', ActivityLogResource::collection($activityLogs));
+            $data = PaginationHelper::formatPaginate($activityLogs, ActivityLogResource::class);
+            return ApiResponseSchema::sendResponse(200, 'Rerived Successfully', $data);
         }
 
         return ApiResponseSchema::sendResponse(200, 'No Data To Retrived');
@@ -39,10 +41,12 @@ class ActivityLogController extends Controller
     {
         // Only Admin and The User That Have Logs Allowed
         if ($request->user()->id == $user_id || $request->user()->role === UserRole::ADMIN) {
-            $activityLogs = ActivityLog::where('user_id', $user_id)->get();
+            
+            $activityLogs = ActivityLog::where('user_id', $user_id)->paginate(8);
 
             if ($activityLogs->isNotEmpty()) {
-                return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', ActivityLogResource::collection($activityLogs));
+                $data = PaginationHelper::formatPaginate($activityLogs, ActivityLogResource::class);
+                return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', $data);
             }
 
             return ApiResponseSchema::sendResponse(200, 'No Data To Retrived');

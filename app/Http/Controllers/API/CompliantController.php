@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\CompliantStatus;
 use App\Helpers\ApiResponseSchema;
+use App\Helpers\PaginationHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompliantRequest;
 use App\Http\Requests\UpdateCompliantRequest;
@@ -20,10 +21,12 @@ class CompliantController extends Controller
      */
     public function index()
     {
-        $compliants = Compliant::all();
+        $compliants = Compliant::paginate(8);
 
         if (count($compliants) > 0) {
-            return ApiResponseSchema::sendResponse(200, 'Retieved Successfully', CompliantResourse::collection($compliants));
+            $data = PaginationHelper::formatPaginate($compliants, CompliantResourse::class);
+
+            return ApiResponseSchema::sendResponse(200, 'Retieved Successfully', $data);
         }
 
         return ApiResponseSchema::sendResponse(200, 'No Compliants To retrieved', []);
@@ -69,10 +72,11 @@ class CompliantController extends Controller
      */
     public function displayMyComplaints()
     {
-        $userComplaint = Compliant::where('user_id', Auth::id())->get();
+        $userComplaint = Compliant::where('user_id', Auth::id())->paginate(8);
 
         if(count($userComplaint) > 0) {
-            return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', CompliantResourse::collection($userComplaint));
+            $data = PaginationHelper::formatPaginate($userComplaint, CompliantResourse::class);
+            return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', $data);
         }
         return ApiResponseSchema::sendResponse(200, 'No Data To Retrived', NULL);
     }

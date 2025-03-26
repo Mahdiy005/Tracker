@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Helpers\ApiResponseSchema;
+use App\Helpers\PaginationHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTrainedImageRequest;
 use App\Http\Requests\UpdateTrainedImageRequest;
@@ -20,10 +21,11 @@ class TrainedImageController extends Controller
      */
     public function index()
     {
-        $images = TrainedImage::where('user_id', Auth::user()->id)->get();
+        $images = TrainedImage::where('user_id', Auth::user()->id)->paginate(8);
         
         if($images && count($images) > 0) {
-            return ApiResponseSchema::sendResponse(200, 'Retrived Successfully', TrainedImageResource::collection($images));
+            $data = PaginationHelper::formatPaginate($images, TrainedImageResource::class);
+            return ApiResponseSchema::sendResponse(200, 'Retrived Successfully', $data);
         }
         return ApiResponseSchema::sendResponse(200, 'No Images To Retrived !');
     }

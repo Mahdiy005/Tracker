@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\UserRole;
 use App\Helpers\ApiResponseSchema;
+use App\Helpers\PaginationHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
@@ -17,9 +18,20 @@ class AttendanceController extends Controller
 {
     public function allAttendance()
     {
-        $attendances = Attendance::with('user')->get();
-        if ($attendances && count($attendances) > 0) {
-            return ApiResponseSchema::sendResponse('200', 'Attendances Retrived Succefully', AttendanceResource::collection($attendances));
+        $attendances = Attendance::with('user')->paginate(8);
+        if ($attendances) {
+            // $data['paginate_data'] = AttendanceResource::collection($attendances);
+            // $data['paginate_links'] = [
+            //     'current_page' => $attendances->currentPage(),
+            //     'last_page' => $attendances->lastPage(),
+            //     'per_page' => $attendances->perPage(),
+            //     'total' => $attendances->total(),
+            //     'next_page_url' => $attendances->nextPageUrl(),
+            //     'prev_page_url' => $attendances->previousPageUrl(),
+            // ];
+
+            $data = PaginationHelper::formatPaginate($attendances, AttendanceResource::class);
+            return ApiResponseSchema::sendResponse('200', 'Attendances Retrived Succefully', $data);
         }
         return ApiResponseSchema::sendResponse(200, 'No Attendaces To retrived');
     }
@@ -39,10 +51,11 @@ class AttendanceController extends Controller
         }
 
         // Execute query
-        $attendances = $attendances->get();
+        $attendances = $attendances->paginate(8);
 
-        if ($attendances && count($attendances) > 0) {
-            return ApiResponseSchema::sendResponse('200', $status . ' user retrived succefully', AttendanceResource::collection($attendances));
+        if ($attendances->isNotEmpty()) {
+            $data = PaginationHelper::formatPaginate($attendances, AttendanceResource::class);
+            return ApiResponseSchema::sendResponse('200', $status . ' user retrived succefully', $data);
         }
         return ApiResponseSchema::sendResponse(200, 'No Attendaces To retrived');
     }
@@ -67,9 +80,10 @@ class AttendanceController extends Controller
      */
     public function getUserAttendance(int $user_id)
     {
-        $userAttendance = Attendance::with('user')->where('user_id', $user_id)->get();
-        if ($userAttendance && count($userAttendance) > 0) {
-            return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', AttendanceResource::collection($userAttendance));
+        $userAttendance = Attendance::with('user')->where('user_id', $user_id)->paginate(8);
+        if ($userAttendance->isNotEmpty()) {
+            $data = PaginationHelper::formatPaginate($userAttendance, AttendanceResource::class);
+            return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', $data);
         }
         return ApiResponseSchema::sendResponse(200, 'No Data Found');
     }
