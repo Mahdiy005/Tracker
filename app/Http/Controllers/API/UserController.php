@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Enums\UserRole;
 use App\Helpers\ApiResponseSchema;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserFAdminResource;
@@ -14,9 +15,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::where('role', '!=', UserRole::ADMIN->value)->get();
+        $users = User::where('role', '!=', UserRole::ADMIN->value)->paginate(8);
         if ($users && count($users) > 0) {
-            return ApiResponseSchema::sendResponse(200, 'Retrived Successfully', UserFAdminResource::collection($users));
+            $data = PaginationHelper::formatPaginate($users, UserFAdminResource::class);
+            return ApiResponseSchema::sendResponse(200, 'Retrived Successfully', $data);
         }
         return ApiResponseSchema::sendResponse(200, 'No Data To Retrived', []);
     }

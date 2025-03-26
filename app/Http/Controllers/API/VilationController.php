@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Enums\UserRole;
 use App\Enums\VilationDetection;
 use App\Helpers\ApiResponseSchema;
+use App\Helpers\PaginationHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVilationRequest;
 use App\Http\Requests\UpdateVilationRequest;
@@ -20,10 +21,11 @@ class VilationController extends Controller
      */
     public function index()
     {
-        $violations = Vilation::with('user')->get();
-        if($violations && count($violations) > 0)
+        $violations = Vilation::with('user')->paginate(8);
+        if($violations->isNotEmpty())
         {
-            return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', ViolationResource::collection($violations));
+            $data = PaginationHelper::formatPaginate($violations, ViolationResource::class);
+            return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', $data);
         }
         return ApiResponseSchema::sendResponse(200, 'No Violations To Received !');
     }
@@ -36,10 +38,11 @@ class VilationController extends Controller
         if($request->has('date')) {
             $violations = $violations->whereDate('created_at', $request->input('date'));
         }
-        $violations = $violations->get();
+        $violations = $violations->paginate(8);
 
         if($violations && count($violations) > 0) {
-            return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', ViolationResource::collection($violations));
+            $data = PaginationHelper::formatPaginate($violations, ViolationResource::class);
+            return ApiResponseSchema::sendResponse(200, 'Retrived Succefully', $data);
         }
 
         return ApiResponseSchema::sendResponse(200, 'No Violations For That User!');
