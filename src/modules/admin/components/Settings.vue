@@ -48,7 +48,7 @@
         size="large"
         color="#845adf"
       >
-        Sigin in
+        Update Profile
       </v-btn>
     </Form>
   </div>

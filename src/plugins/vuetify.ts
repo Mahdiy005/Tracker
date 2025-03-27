@@ -16,7 +16,8 @@ export const useVuetify = (app: App) => {
         myCustomTheme: {
           dark: false,
           colors: {
-            primary: "#000",
+            primary: "rgb(132, 90, 223)",
+            secondary: "rgb(35, 183, 229)",
           },
         },
       },

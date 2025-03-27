@@ -3,6 +3,7 @@
     <!-- this input to handle basic input -->
     <div v-if="type != 'select' && type != 'checkbox'">
       <label
+        v-if="isLable"
         class="block text-start text-gray-700 dark:text-white text-sm font-medium mb-1"
         >{{ lable }}</label
       >
@@ -31,9 +32,11 @@
 
     <!-- this input to handle select input -->
     <div v-if="type == 'select'">
-      <label class="block text-start text-gray-700 text-sm font-medium mb-1">{{
-        lable
-      }}</label>
+      <label
+        v-if="isLable"
+        class="block text-start text-gray-700 text-sm font-medium mb-1"
+        >{{ lable }}</label
+      >
       <Field
         as="select"
         :name="name"
@@ -43,6 +46,7 @@
         class="w-full border border-gray-300 rounded-lg px-3 py-3 text-gray-900 focus:outline-none"
         @input="$emit('update:modelValue', $event.target.value)"
       >
+        <option disabled selected value="">Select Item</option>
         <option v-for="(item, index) in options" :key="index" :value="item">
           {{ item }}
         </option>
@@ -58,15 +62,17 @@ import { Field, ErrorMessage } from "vee-validate";
 
 const props = withDefaults(
   defineProps<{
-    lable: string;
+    lable?: string;
     modelValue: string | number;
     name: string;
-    rules: string;
+    rules?: string;
     type: string;
     options?: Array<string> | Array<number>;
+    isLable?: boolean;
   }>(),
   {
     rules: "required",
+    isLable: true,
   }
 );
 </script>
