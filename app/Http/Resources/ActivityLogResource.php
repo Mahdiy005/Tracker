@@ -18,7 +18,7 @@ class ActivityLogResource extends JsonResource
             'id' => $this->id,
             'is_violate' => $this->is_violate,
             'activity_type' => $this->activity_type,
-            'user' => new UserFAdminResource($this->user)
+            'user' => new UserResource($this->user)
         ];
     }
 }

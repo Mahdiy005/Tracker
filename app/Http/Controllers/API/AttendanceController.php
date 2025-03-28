@@ -28,7 +28,7 @@ class AttendanceController extends Controller
             $attendances = $attendances->where('status', $request->input('status'));
         }
 
-        $attendances = $attendances->paginate(2)->appends($request->query());
+        $attendances = $attendances->paginate(8)->appends($request->query());
         
         if ($attendances->isNotEmpty()) {
             $data = PaginationHelper::formatPaginate($attendances, AttendanceResource::class);

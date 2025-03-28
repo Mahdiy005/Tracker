@@ -43,12 +43,12 @@ class User extends Authenticatable
     // RELATIONSHIPS
     public function attendances()
     {
-        $this->hasMany(Attendance::class, 'user_id', 'id');
+        return $this->hasMany(Attendance::class, 'user_id', 'id');
     }
 
     public function vilations()
     {
-        $this->hasMany(Vilation::class, 'user_id', 'id');
+        return $this->hasMany(Vilation::class, 'user_id', 'id');
     }
 
     public function trainedImages()
