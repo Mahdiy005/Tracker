@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,9 @@ class UserFAdminResource extends JsonResource
             'serial' => $this->serial,
             'position' => $this->position,
             'role' => $this->role,
+            'attendances' => AttendanceResource::collection($this->attendances),
+            'complaints' => CompliantResourse::collection($this->compliants),
+            'acitvity_log' => ActivityLogResource::collection($this->actvityLogs),
         ];
     }
 }

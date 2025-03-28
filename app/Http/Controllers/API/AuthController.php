@@ -69,6 +69,7 @@ class AuthController extends Controller
             $data['salary'] = $user->salary;
             $data['serial'] = $user->serial;
             $data['token'] = $user->createToken('Login Token')->plainTextToken;
+            $data['role'] = $user->role;
             return ApiResponseSchema::sendResponse(200, 'Logged in successfully', $data);
         }
         return ApiResponseSchema::sendResponse(401, 'Credentials Error');
