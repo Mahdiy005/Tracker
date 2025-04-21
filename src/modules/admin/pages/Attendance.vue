@@ -6,29 +6,42 @@
       <template #second-page> Attendance </template>
     </BreadCrumb>
 
-    <div class="filters flex gap-2 items-center mt-2">
-      <BaseInput
-        v-model="date"
-        name="date_filter"
-        type="date"
-        :isLable="false"
-      />
+    <div class="filters flex justify-between items-center mt-2">
+      <div class="flex gap-2 items-center">
+        <BaseInput
+          v-model="date"
+          name="date_filter"
+          type="date"
+          :isLable="false"
+        />
 
-      <BaseInput
-        v-model="status"
-        name="status_filter"
-        type="select"
-        :isLable="false"
-        :options="['absent', 'attend']"
-      />
+        <BaseInput
+          v-model="status"
+          name="status_filter"
+          type="select"
+          :isLable="false"
+          :options="['absent', 'attend']"
+        />
 
-      <BaseInput
-        v-model="position"
-        name="position_filter"
-        type="text"
-        :isLable="false"
-        lable="Enter position"
-      />
+        <BaseInput
+          v-model="position"
+          name="position_filter"
+          type="text"
+          :isLable="false"
+          lable="Enter position"
+        />
+      </div>
+
+      <div
+        class="cursor-pointer hover:bg-[#ddd] hover:dark:bg-[#dddddd18] p-[2px] rounded-lg"
+      >
+        <Icon
+          icon="mdi-light:grid"
+          width="30"
+          height="30"
+          class="dark:text-white"
+        ></Icon>
+      </div>
     </div>
 
     <div
@@ -54,12 +67,13 @@
     >
       <employeeCard
         v-for="user in attendance"
-        :key="user.id"
+        :key="user.user.id"
         :user_name="user?.user?.name"
         :user_role="user?.user?.email"
         :position="user?.user?.position"
         :status="user?.status"
         :date="user?.date"
+        :id="user?.user?.id"
       >
         <template #user_image>
           <img
@@ -75,19 +89,17 @@
 
     <div class="pagination w-full items-center justify-center mt-7">
       <v-pagination
+        v-model="currentPage"
         :length="lastPage"
         :total-visible="5"
-        v-model="currentPage"
         :disabled="lastPage == 1"
       ></v-pagination>
-
-      {{ lastPage }}
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import BreadCrumb from "@/global/BreadCrumb.vue";
 import BaseInput from "@/global/BaseInput.vue";
 import employeeCard from "@/global/cards/employeeCard.vue";
@@ -105,7 +117,9 @@ const {
   status,
 } = useAttendance();
 
-getAttendance();
+watchEffect(getAttendance);
 
-watch([currentPage, date, status], getAttendance);
+watch([status, date], () => {
+  currentPage.value = 1;
+});
 </script>

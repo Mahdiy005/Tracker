@@ -15,18 +15,28 @@
       >
     </div>
 
-    <component :is="tabs[currentTab]" class="mt-8"></component>
+    <component
+      :attend="attendance"
+      :loader="loader"
+      :is="tabs[currentTab]"
+      class="mt-8"
+    ></component>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import Compliant from "./Compliant.vue";
 import Settings from "./Settings.vue";
 import Attendance from "./Attendance.vue";
 
-const currentTab = ref("Attendance");
-const tabs = { Attendance, Compliant, Settings };
+const currentTab: any = ref("Attendance");
+const tabs: any = { Attendance, Compliant, Settings };
+
+const props = defineProps<{
+  attendance: any;
+  loader: any;
+}>();
 </script>
 
 <style scoped>

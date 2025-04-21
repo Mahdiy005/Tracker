@@ -22,7 +22,7 @@
         variant="flat"
         size="default"
         color="primary"
-        @click="$router.push(`/profile`)"
+        @click="$router.push(`/attendance/profile/${id}`)"
       >
         Show Profile
       </v-btn>
@@ -42,31 +42,13 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  user_name: {
-    type: String,
-    reqired: true,
-  },
-
-  user_role: {
-    type: String,
-    reqired: true,
-  },
-
-  position: {
-    type: String,
-    reqired: true,
-  },
-
-  status: {
-    type: String,
-    reqired: true,
-  },
-
-  date: {
-    type: String,
-    reqired: true,
-  },
-});
+<script setup lang="ts">
+const props = defineProps<{
+  user_name: string;
+  user_role: string;
+  position: string;
+  status: string;
+  date: string;
+  id: number;
+}>();
 </script>

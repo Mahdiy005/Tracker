@@ -33,7 +33,7 @@ const adminRoutes = [
   },
 
   {
-    path: "/profile",
+    path: "/attendance/profile/:id",
     name: "profile",
     component: () => import("../pages/Profile.vue"),
     meta: {

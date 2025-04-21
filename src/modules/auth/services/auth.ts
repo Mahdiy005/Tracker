@@ -20,13 +20,21 @@ export const useAuthStore = defineStore("useAuthStore", () => {
       isLoading.value = true;
       const response = await api.post("/auth/login", credintials);
       user.value = response.data.data;
-      Cookies.set("user", JSON.stringify(user.value), {
-        expires: 7,
-        secure: true,
-      });
-      isLoading.value = false;
-      await router.push("/");
-      toast.success("Login Successfully", { autoClose: 3000 });
+
+      if (user.value?.role === "admin") {
+        Cookies.set("user", JSON.stringify(user.value), {
+          expires: 7,
+          secure: true,
+        });
+        isLoading.value = false;
+        await router.push("/");
+        toast.success("Login Successfully", { autoClose: 3000 });
+      } else {
+        isLoading.value = false;
+        toast.error("You are not allowed to access dashboard", {
+          autoClose: 3000,
+        });
+      }
     } catch (error) {
       isLoading.value = false;
       toast.error("Error in email or password!", { autoClose: 3000 });

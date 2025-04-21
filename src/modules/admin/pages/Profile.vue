@@ -19,21 +19,53 @@
           />
         </div>
 
-        <div class="user-email-name">
-          <h2 class="font-bold text-xl dark:text-white">Omradel Bakry</h2>
-          <span class="font-thin dark:text-white"
-            >omradelbakry375@gmail.com</span
-          >
+        <v-skeleton-loader
+          v-if="!userData.name"
+          type="list-item-two-line"
+          class="w-1/4"
+        ></v-skeleton-loader>
+
+        <div v-if="userData" class="user-email-name">
+          <div>
+            <h2 class="font-bold text-xl dark:text-white">
+              {{ userData?.name }}
+            </h2>
+            <span class="font-thin dark:text-white">{{ userData?.email }}</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <ProfileDetails />
+    <ProfileDetails
+      :attendance="userData"
+      :loader="isLoading"
+      @update="fetchUserData()"
+    />
   </div>
 </template>
 
 <script setup>
+import { onMounted, ref } from "vue";
 import ProfileDetails from "../components/ProfileDetails.vue";
+import { useUser } from "../services/profile";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const { getUser, isLoading } = useUser();
+const userData = ref({});
+
+const fetchUserData = async () => {
+  userData.value = await getUser(route.params.id);
+};
+
+onMounted(() => {
+  fetchUserData();
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-skeleton-loader {
+  top: 10px;
+  background-color: var(--color-light);
+}
+</style>
