@@ -17,7 +17,7 @@ const adminRoutes = [
     meta: {
       isAuthenticated: true,
       title: "Attendance | Tracker",
-      description: "Welcome to my homepage",
+      description: "Welcome to attendancepage",
     },
   },
 
@@ -28,7 +28,7 @@ const adminRoutes = [
     meta: {
       isAuthenticated: true,
       title: "Videos | Tracker",
-      description: "Welcome to my homepage",
+      description: "Welcome to my videospage",
     },
   },
 
@@ -39,7 +39,29 @@ const adminRoutes = [
     meta: {
       isAuthenticated: true,
       title: "Profile | Tracker",
-      description: "Welcome to my homepage",
+      description: "Welcome to my profilepage",
+    },
+  },
+
+  {
+    path: "/users",
+    name: "users",
+    component: () => import("../pages/Users.vue"),
+    meta: {
+      isAuthenticated: true,
+      title: "Users | Tracker",
+      description: "Welcome to my userspage",
+    },
+  },
+
+  {
+    path: "/violations",
+    name: "violations",
+    component: () => import("../pages/Violations.vue"),
+    meta: {
+      isAuthenticated: true,
+      title: "Violations | Tracker",
+      description: "Welcome to my violationspage",
     },
   },
 ];

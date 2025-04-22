@@ -50,7 +50,37 @@
           />
         </div>
 
-        <span class="text-lightgray text-[16px]"> Camera Video </span>
+        <span class="text-lightgray text-[16px]"> Streeming Video </span>
+      </router-link>
+    </li>
+
+    <li>
+      <router-link to="/violations" class="flex gap-x-2 py-2 px-3">
+        <div class="prepend-icon">
+          <img
+            src="../assets/images/violations.svg"
+            width="25"
+            height="25"
+            alt="..."
+          />
+        </div>
+
+        <span class="text-lightgray text-[16px]"> Violations </span>
+      </router-link>
+    </li>
+
+    <li>
+      <router-link to="/users" class="flex gap-x-2 py-2 px-3">
+        <div class="prepend-icon">
+          <img
+            src="../assets/images/users.svg"
+            width="25"
+            height="25"
+            alt="..."
+          />
+        </div>
+
+        <span class="text-lightgray text-[16px]"> Users </span>
       </router-link>
     </li>
   </ul>
