@@ -13,6 +13,7 @@
         @click="currentTab = tab"
         >{{ tab }}</span
       >
+      <!-- <Icon icon="si:insights-fill" class="h-4 w-4"></Icon> -->
     </div>
 
     <component
@@ -29,9 +30,10 @@ import { ref } from "vue";
 import Compliant from "./Compliant.vue";
 import Settings from "./Settings.vue";
 import Attendance from "./Attendance.vue";
+import Insights from "./Insights.vue";
 
 const currentTab: any = ref("Attendance");
-const tabs: any = { Attendance, Compliant, Settings };
+const tabs: any = { Attendance, Compliant, Insights, Settings };
 
 const props = defineProps<{
   attendance: any;

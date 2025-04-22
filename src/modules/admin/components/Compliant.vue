@@ -47,7 +47,6 @@
       <div class="actions flex gap-3 justify-end">
         <v-btn
           :ripple="false"
-          :disabled="item?.status === 'approved' || item?.status === 'rejected'"
           type="submit"
           class="text-capitalize rounded-lg mt-5"
           variant="flat"

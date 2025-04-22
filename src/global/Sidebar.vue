@@ -6,7 +6,8 @@
     width="240"
   >
     <div class="logo flex justify-center p-[14px]" aria-label="logo of website">
-      <img src="../assets/images/desktop-dark.png" alt="" />
+      <!-- <img src="../assets/images/desktop-dark.png" alt="" /> -->
+      <h1 class="font-bold text-3xl">Tracker</h1>
     </div>
 
     <v-divider></v-divider>
