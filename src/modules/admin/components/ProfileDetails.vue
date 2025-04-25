@@ -13,7 +13,6 @@
         @click="currentTab = tab"
         >{{ tab }}</span
       >
-      <!-- <Icon icon="si:insights-fill" class="h-4 w-4"></Icon> -->
     </div>
 
     <component
@@ -21,6 +20,7 @@
       :loader="loader"
       :is="tabs[currentTab]"
       class="mt-8"
+      @update="update"
     ></component>
   </div>
 </template>
@@ -32,10 +32,16 @@ import Settings from "./Settings.vue";
 import Attendance from "./Attendance.vue";
 import Insights from "./Insights.vue";
 
+const emit = defineEmits(["subUpdate"]);
+
+const update = () => {
+  emit("subUpdate");
+};
+
 const currentTab: any = ref("Attendance");
 const tabs: any = { Attendance, Compliant, Insights, Settings };
 
-const props = defineProps<{
+const { attendance, loader } = defineProps<{
   attendance: any;
   loader: any;
 }>();

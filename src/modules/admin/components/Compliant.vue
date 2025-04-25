@@ -16,7 +16,7 @@
     </div>
 
     <div
-      v-for="(item, index) in localAttend?.complaints"
+      v-for="(item, index) in attend?.complaints"
       :key="item"
       :class="{
         'border-[2px] border-secondry': index === 0,
@@ -87,7 +87,7 @@
               <!-- reply message -->
               <BaseInput
                 lable="Message"
-                v-model="event.reply"
+                v-model="event.message"
                 name="copiliant_message"
                 rules="required"
                 type="text"
@@ -124,47 +124,48 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useCompliants } from "../services/compliants";
 import { useUser } from "../services/profile";
 import { Form } from "vee-validate";
 import BaseInput from "@/global/BaseInput.vue";
 import { useRoute } from "vue-router";
+import { type Compliant } from "@/types/interfaces";
 
 const emit = defineEmits(["update"]);
-const props = defineProps({
-  attend: {
-    type: Object,
-    required: true,
-  },
-  loader: {
-    type: Boolean,
-    required: true,
-  },
-});
 
-const localAttend = ref(props.attend);
-const dialog = ref([]);
+const { attend, loader } = defineProps<{
+  attend: any;
+  loader: boolean;
+}>();
+
+// const localAttend = ref(attend);
+const dialog = ref<any>([]);
 const route = useRoute();
 const { replyCompliant, isLoading } = useCompliants();
 const { getUser } = useUser();
-const event = ref({
-  reply: "",
-  status: "",
+const event = ref<Compliant>({
+  message: "",
+  status: "approved",
 });
 
-const openDialog = (index) => {
+const openDialog = (index: number) => {
   dialog.value[index]?.showModal();
 };
 
-const closeDialog = (index) => {
+const closeDialog = (index: number) => {
   dialog.value[index]?.close();
 };
 
-const submitReply = async (item, reply, messaeg, index) => {
-  await replyCompliant(item, reply, messaeg);
-  localAttend.value = await getUser(route.params.id);
+const submitReply = async (
+  compliant_id: number,
+  reply: string,
+  status: "approved" | "rejected",
+  index: number
+) => {
+  await replyCompliant(compliant_id, reply, status);
+  emit("update");
   closeDialog(index);
 };
 </script>

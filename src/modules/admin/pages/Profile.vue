@@ -39,7 +39,7 @@
     <ProfileDetails
       :attendance="userData"
       :loader="isLoading"
-      @update="fetchUserData()"
+      @subUpdate="fetchUserData"
     />
   </div>
 </template>
