@@ -32,7 +32,7 @@ import Settings from "./Settings.vue";
 import Attendance from "./Attendance.vue";
 import Insights from "./Insights.vue";
 
-const emit = defineEmits(["subUpdate"]);
+const emit = defineEmits<{ (e: "subUpdate"): void }>();
 
 const update = () => {
   emit("subUpdate");

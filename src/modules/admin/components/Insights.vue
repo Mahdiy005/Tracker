@@ -12,7 +12,7 @@
       <template #catr-body><PieChart /></template>
     </GlobalCard>
 
-    <GlobalCard>
+    <!-- <GlobalCard>
       <template #card-title>Line Chart</template>
       <template #catr-body><LineChart /></template>
     </GlobalCard>
@@ -20,7 +20,7 @@
     <GlobalCard>
       <template #card-title>Area Chart</template>
       <template #catr-body><AreaChart /></template>
-    </GlobalCard>
+    </GlobalCard> -->
   </div>
 </template>
 

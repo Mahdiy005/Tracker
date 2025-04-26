@@ -14,7 +14,7 @@
         :rules="rules"
         :type="type"
         class="w-full border border-gray-300 rounded-lg px-3 py-3 text-gray-900 focus:outline-none"
-        @input="$emit('update:modelValue', $event.target.value)"
+        v-model="defaultInput"
       />
     </div>
 
@@ -25,7 +25,7 @@
         type="checkbox"
         class="mr-2 h-4 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
         :checked="modelValue"
-        @change="$emit('update:modelValue', $event.target.checked)"
+        v-model="checkboxInput"
       />
       <span>{{ lable }}</span>
     </div>
@@ -44,7 +44,7 @@
         :placeholder="lable"
         :rules="rules"
         class="w-full border border-gray-300 rounded-lg px-3 py-3 text-gray-900 focus:outline-none"
-        @input="$emit('update:modelValue', $event.target.value)"
+        v-model="selecttInput"
       >
         <option disabled selected value="">Select Item</option>
         <option v-for="(item, index) in options" :key="index" :value="item">
@@ -60,19 +60,25 @@
 <script setup lang="ts">
 import { Field, ErrorMessage } from "vee-validate";
 
-const props = withDefaults(
-  defineProps<{
-    lable?: string;
-    modelValue: string | number;
-    name: string;
-    rules?: string;
-    type: string;
-    options?: Array<string> | Array<number>;
-    isLable?: boolean;
-  }>(),
-  {
-    rules: "required",
-    isLable: true,
-  }
-);
+const defaultInput = defineModel("defaultInput");
+const selecttInput = defineModel("selecttInput");
+const checkboxInput = defineModel("checkboxInput");
+
+const {
+  lable,
+  modelValue,
+  name,
+  rules = "required",
+  type,
+  options,
+  isLable = true,
+} = defineProps<{
+  lable?: string;
+  modelValue?: string | number;
+  name: string;
+  rules?: string;
+  type: string;
+  options?: Array<string> | Array<number>;
+  isLable?: boolean;
+}>();
 </script>

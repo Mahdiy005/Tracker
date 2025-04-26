@@ -87,7 +87,7 @@
               <!-- reply message -->
               <BaseInput
                 lable="Message"
-                v-model="event.message"
+                v-model:default-input="event.message"
                 name="copiliant_message"
                 rules="required"
                 type="text"
@@ -97,7 +97,7 @@
               <!-- status -->
               <BaseInput
                 lable="Status"
-                v-model="event.status"
+                v-model:selectt-input="event.status"
                 name="compliant_status"
                 rules="required"
                 type="select"
@@ -127,24 +127,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useCompliants } from "../services/compliants";
-import { useUser } from "../services/profile";
 import { Form } from "vee-validate";
 import BaseInput from "@/global/BaseInput.vue";
-import { useRoute } from "vue-router";
 import { type Compliant } from "@/types/interfaces";
 
-const emit = defineEmits(["update"]);
+const emit = defineEmits<{ (e: "update"): void }>();
 
 const { attend, loader } = defineProps<{
   attend: any;
   loader: boolean;
 }>();
 
-// const localAttend = ref(attend);
 const dialog = ref<any>([]);
-const route = useRoute();
 const { replyCompliant, isLoading } = useCompliants();
-const { getUser } = useUser();
 const event = ref<Compliant>({
   message: "",
   status: "approved",
