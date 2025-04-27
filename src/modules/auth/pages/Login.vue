@@ -17,7 +17,7 @@
           <!-- email -->
           <BaseInput
             lable="Email"
-            v-model="event.email"
+            v-model:default-input="event.email"
             name="email"
             rules="required|email"
             type="email"
@@ -27,7 +27,7 @@
           <!-- password -->
           <BaseInput
             lable="Password"
-            v-model="event.password"
+            v-model:default-input="event.password"
             name="password"
             rules="required|min:6"
             type="password"
