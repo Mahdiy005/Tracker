@@ -17,7 +17,7 @@ class AttendanceResource extends JsonResource
         return [
             'status' => $this->status,
             'date'   => date_format($this->created_at, 'Y-m-d'),
-            'user'   => new UserResource($this->user),
+            'user'   => new UserResource($this->user), 
         ];
     }
 }

@@ -10,9 +10,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVilationRequest;
 use App\Http\Requests\UpdateVilationRequest;
 use App\Http\Resources\ViolationResource;
+use App\Http\Resources\ViolationUserResource;
 use App\Models\User;
 use App\Models\Vilation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VilationController extends Controller
 {
@@ -81,5 +83,28 @@ class VilationController extends Controller
         if(! $violation) return ApiResponseSchema::sendResponse(404, 'Not Found Violation');
         $deleted = $violation->delete();
         return ApiResponseSchema::sendResponse(200, 'Deleted Successfully', []);
+    }
+
+    // get Current Violation for attendance 
+    public function getCurrentUserViolation(Request $request)
+    {
+        $currentViolation = Auth::user()->vilations()
+            ->whereYear('created_at', date('Y')); // Only force the current year
+
+        if ($request->has('day')) {
+            $currentViolation->whereDate('created_at', $request->input('day'));
+        } elseif ($request->has('month')) {
+            $currentViolation->whereMonth('created_at', $request->input('month'));
+        } else {
+            $currentViolation->whereMonth('created_at', date('m')); // Default to current month if neither day nor month is passed
+        }
+
+        $currentViolation = $currentViolation->get();
+
+        return ApiResponseSchema::sendResponse(
+            200,
+            'Retrieved Successfully',
+            ViolationUserResource::collection($currentViolation)
+        );
     }
 }
