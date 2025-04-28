@@ -27,6 +27,14 @@ class UserFAdminResource extends JsonResource
             'attendances' => AttendanceResource::collection($this->attendances),
             'complaints' => CompliantResourse::collection($this->compliants),
             'acitvity_log' => ActivityLogResource::collection($this->actvityLogs),
+            'number_of_vilations' => $this->vilations->count(),
+            'number_of_attend' => $this->attendances->filter(function ($attendance) {
+                return $attendance->status === 'attend';
+            })->count(),
+            'number_of_absent' => $this->attendances->filter(function ($attendance) {
+                return $attendance->status === 'absent';
+            })->count(),
+            'number_of_complaints' => $this->compliants->count(),
         ];
     }
 }

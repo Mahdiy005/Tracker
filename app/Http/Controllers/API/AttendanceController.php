@@ -18,23 +18,44 @@ class AttendanceController extends Controller
 {
     public function allAttendance(Request $request)
     {
-        $attendances = Attendance::with('user');
+        // Start with base query
+        $query = Attendance::with('user');
 
-        if ($request->has('date')) {
-            $attendances = $attendances->whereDate('created_at', $request->input('date'));
+        // Apply date filter if present
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->input('date'));
         }
 
-        if ($request->has('status')) {
-            $attendances = $attendances->where('status', $request->input('status'));
+        // Apply date filter if present
+        if ($request->filled('month')) {
+            // i need if query parameter month is * then i need to get all records
+            if($request->input('month') == '*') {
+                $query->whereMonth('created_at', '!=', null);
+            } else {
+                $query->whereMonth('created_at', $request->input('month'));
+            }
         }
 
-        $attendances = $attendances->paginate(8)->appends($request->query());
-        
+        // Apply status filter if present
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        // Reset to first page when new filters are applied
+        if ($request->hasAny(['date', 'status']) && !$request->has('page')) {
+            $request->merge(['page' => 1]);
+        }
+
+        // Paginate the filtered results
+        $attendances = $query->paginate(2)->appends($request->query());
+
+        // Format response
         if ($attendances->isNotEmpty()) {
             $data = PaginationHelper::formatPaginate($attendances, AttendanceResource::class);
-            return ApiResponseSchema::sendResponse('200', 'Attendances Retrived Succefully', $data);
+            return ApiResponseSchema::sendResponse('200', 'Attendances Retrieved Successfully', $data);
         }
-        return ApiResponseSchema::sendResponse(200, 'No Attendaces To retrived');
+
+        return ApiResponseSchema::sendResponse(200, 'No Attendances To retrieve');
     }
     /**
      * Display a listing of the resource.

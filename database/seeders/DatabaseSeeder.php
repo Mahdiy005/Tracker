@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             AttendanceSeeder::class,
             CompliantSeeder::class,
             ComplaintRepliesSeeder::class,
+            VilationSeeder::class,
             // ActivityLogSeeder::class,
         ]);
     }

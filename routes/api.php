@@ -64,6 +64,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
         Route::get('/user/{user_id}', 'getUserAttendance');
         // manually store new attendance
         Route::post('/store/{user_id}', 'store');
+        // https://www.linkedin.com/in/mohamed-mahdi-2236ba23a
     });
 
     //==================================== Violation Module
@@ -100,6 +101,8 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
         // Delete Reply
         Route::get('/delete/{compliant_id}', 'destroy');
     });
+
+    // Statistics Endpints
 });
 // 10|GaTCDwP4uWTNcUXTYJ3Pubx3SKiUHvw4OxeTqK1Wc285ac7b~~ regular user token
 // 12|np2uorauE0UAQpuo7rEYFVvGwSZ1TvjDJ7v690cS53a56475~~ admin user token
@@ -121,6 +124,19 @@ Route::middleware(['auth:sanctum', 'role:' . UserRole::USER->value])->prefix('us
         Route::post('/', 'store');
         // display your complaints history
         Route::get('/my-complaints', 'displayMyComplaints');
+    });
+
+    //==================================== Violation Module
+    Route::controller(VilationController::class)->prefix('violations')->group(function () {
+        // Get Violation for current users based on (month, day)
+        Route::get('/', 'getCurrentUserViolation');
+    });
+
+
+    Route::controller(UserController::class)->group(function () {
+        // get all users in the system
+        Route::get('/meta', 'userMeta');
+        
     });
 });
 
